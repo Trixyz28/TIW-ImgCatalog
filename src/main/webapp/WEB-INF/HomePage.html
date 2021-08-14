@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Home Page</title>
+</head>
+
+<body>
+    <div align="right">
+        <a th:href="@{/Logout}">Logout</a>
+    </div>
+    <h1>Welcome,
+        <span th:text=${session.user.name}>A</span>
+        <span th:text=${session.user.surname}>B</span>!
+    </h1>
+
+
+
+</body>
+</html>

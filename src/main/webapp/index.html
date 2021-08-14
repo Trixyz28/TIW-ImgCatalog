@@ -1,15 +1,15 @@
 <!DOCTYPE html>
-< xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta charset="UTF-8">
-<title>Access Page</title>
+<title>Login</title>
 </head>
 <body>
-    <h1>Welcome to the mission management application</h1>
+    <h1>Welcome to the image classification page!</h1>
 
-    <form action="CheckLogin" method="POST">
+    <form action="Login" method="POST">
         Username: <input type="text" name="username" required> <br>
-        Password: <input type="password" name="pwd" required><br>
+        Password: <input type="password" name="password" required><br>
         <input type="submit" value="login">
         <p th:text=" ${errorMsg}"></p>
     </form>
