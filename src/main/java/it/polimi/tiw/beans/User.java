@@ -1,6 +1,8 @@
 package it.polimi.tiw.beans;
 
-public class User {
+import java.io.Serializable;
+
+public class User implements Serializable {
     private int userId;
     private String username;
     private String name;

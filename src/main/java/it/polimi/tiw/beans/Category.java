@@ -1,8 +1,8 @@
 package it.polimi.tiw.beans;
 
 import java.io.Serializable;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Category implements Serializable {
     private static final long serialVersionUID = 1L;
@@ -13,7 +13,7 @@ public class Category implements Serializable {
     private int numChild;
 
     private Boolean isTop = false;
-    private Map<Category, Integer> subClasses = new HashMap<Category, Integer>();
+    private List<Category> subClasses = new ArrayList<>();
 
 
     public int getId() {
@@ -56,18 +56,20 @@ public class Category implements Serializable {
         isTop = top;
     }
 
-    public Map<Category, Integer> getSubClasses() {
+    public List<Category> getSubClasses() {
         return subClasses;
     }
 
-    public void addSubClass(Category category, Integer n) {
-        subClasses.put(category, n);
+    public void addSubClass(Category category) {
+        subClasses.add(category);
     }
 
     public void removeSubClass(Category category) {
         subClasses.remove(category);
     }
 
+
+    /*
     public String toString() {
         StringBuffer aBuffer = new StringBuffer("Category");
         aBuffer.append(" id: ");
@@ -77,6 +79,8 @@ public class Category implements Serializable {
         aBuffer.append(" subparts: ");
         return aBuffer.toString();
     }
+
+     */
 
 
 

@@ -17,11 +17,12 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;
 
-@WebServlet("/HomePage")
+@WebServlet("/GoToHomePage")
 public class GoToHomePage extends HttpServlet {
     private static final long serialVersionUID = 1L;
     private TemplateEngine templateEngine;
     private Connection connection = null;
+    private User user;
 
     public GoToHomePage() {
         super();
@@ -49,15 +50,17 @@ public class GoToHomePage extends HttpServlet {
             return;
         }
 
-        User user = (User) session.getAttribute("user");
+        user = (User) session.getAttribute("user");
 
         List<Category> allCategories = null;
         List<Category> topCategories = null;
 
         CategoryDAO categoryDAO = new CategoryDAO(connection);
+
         try {
             allCategories = categoryDAO.findAllCategories();
             topCategories = categoryDAO.findTopsAndSubtrees();
+
         } catch(Exception e) {
             e.printStackTrace();
             response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR,
@@ -66,7 +69,7 @@ public class GoToHomePage extends HttpServlet {
         }
 
 
-        // Redirect to the Home page and add missions to the parameters
+        // Redirect to the Home page and add categories to the parameters
         String path = "/WEB-INF/HomePage.html";
         ServletContext servletContext = getServletContext();
 
