@@ -3,16 +3,53 @@
 <head>
     <meta charset="UTF-8">
     <title>Home Page</title>
+    <link rel="stylesheet" type="text/css" media="all"
+          href="../CSS/mystyle.css" th:href="@{/resources/css/mystyle.css}" />
 </head>
 
 <body>
+
     <div align="right">
+        <!-- tag <a>: hyperlink -->
         <a th:href="@{/Logout}">Logout</a>
     </div>
+
     <h1>Welcome,
         <span th:text=${session.user.name}>A</span>
         <span th:text=${session.user.surname}>B</span>!
+        <!-- tag <span>: inline container for markup -->
     </h1>
+
+    <!-- tag <ul>: unordered HTML list
+    <li>: list item used inside <ol>, <ul>, <menu >-->
+
+    <ul>
+        <!--/* the product parameter to use in the fragment is the current child */-->
+        <li th:each="category : ${topcategories}"
+            th:insert="@{WEB-INF/fragment.html} :: list (category)"></li>
+    </ul>
+
+    <div  class="formdiv">
+        <p>Complete the form to create a category</p>
+        <form action="#" th:action="@{/CreateCategory}" method="POST">
+            <fieldset>
+                <p>
+                    Name: <input type="text" name="name" required />
+                </p>
+
+                <p>
+                    <label for="allcategories">Choose a father category:</label>
+                    <select
+                        name="fcategoryId" id="fcategoryId">
+                    <option th:each="c : ${allcategories}" th:value="${c.id}"
+                            th:text="${c.name}"></option>
+                    </select>
+                </p>
+
+                <input type="submit" name="Create Product">
+            </fieldset>
+        </form>
+    </div>
 
 
 

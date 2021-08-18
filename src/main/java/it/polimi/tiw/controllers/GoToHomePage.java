@@ -1,6 +1,8 @@
 package it.polimi.tiw.controllers;
 
+import it.polimi.tiw.beans.Category;
 import it.polimi.tiw.beans.User;
+import it.polimi.tiw.dao.CategoryDAO;
 import it.polimi.tiw.utils.ConnectionHandler;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.WebContext;
@@ -13,6 +15,7 @@ import javax.servlet.annotation.*;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.List;
 
 @WebServlet("/HomePage")
 public class GoToHomePage extends HttpServlet {
@@ -47,34 +50,39 @@ public class GoToHomePage extends HttpServlet {
         }
 
         User user = (User) session.getAttribute("user");
-        /*
-        MissionsDAO missionsDAO = new MissionsDAO(connection);
-        List<Mission> missions = new ArrayList<Mission>();
 
+        List<Category> allCategories = null;
+        List<Category> topCategories = null;
 
-
+        CategoryDAO categoryDAO = new CategoryDAO(connection);
         try {
-            missions = missionsDAO.findMissionsByUser(user.getId());
-        } catch (SQLException e) {
-            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Not possible to recover missions");
+            allCategories = categoryDAO.findAllCategories();
+            topCategories = categoryDAO.findTopsAndSubtrees();
+        } catch(Exception e) {
+            e.printStackTrace();
+            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR,
+                    "Error in retrieving products from the database");
             return;
-        }*/
+        }
+
 
         // Redirect to the Home page and add missions to the parameters
         String path = "/WEB-INF/HomePage.html";
         ServletContext servletContext = getServletContext();
 
         final WebContext webContext = new WebContext(request, response, servletContext, request.getLocale());
-        //webContext.setVariable("missions", missions);
+        webContext.setVariable("allcategories",allCategories);
+        webContext.setVariable("topcategories",topCategories);
         templateEngine.process(path, webContext, response.getWriter());
 
 
     }
 
+    /*
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         doGet(request, response);
-    }
+    }*/
 
     public void destroy() {
         try {
