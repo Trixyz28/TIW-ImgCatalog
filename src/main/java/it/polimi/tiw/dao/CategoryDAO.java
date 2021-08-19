@@ -336,7 +336,7 @@ public class CategoryDAO {
         return max;
     }
 
-    public boolean cyclicLinkExists(int p1, int p2) throws SQLException {
+    private boolean cyclicLinkExists(int p1, int p2) throws SQLException {
         //check if p2 is an ancestor of p1 by using RECURSIVE
         boolean exists = false;
 

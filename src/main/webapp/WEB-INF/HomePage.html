@@ -4,7 +4,7 @@
     <meta charset="ISO-8859-1">
     <title>Home Page</title>
     <link rel="stylesheet" type="text/css" media="all"
-          href="../CSS/mystyle.css" th:href="@{/resources/css/mystyle.css}" />
+          href="../CSS/home.css" th:href="@{/resources/css/home.css}" />
 </head>
 
 <body>
@@ -14,7 +14,7 @@
     </div>
 
     <h1>Welcome,
-        <span th:text="${session.user.name + ' ' + session.user.surname}">A</span>!
+        <span th:text="${session.user.name + ' ' + session.user.surname}">User A</span>!
     </h1>
 
 

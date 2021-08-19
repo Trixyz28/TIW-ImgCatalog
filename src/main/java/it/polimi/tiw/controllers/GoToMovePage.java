@@ -88,7 +88,7 @@ public class GoToMovePage extends HttpServlet {
         }
 
         // Redirect to the Home page and add categories to the parameters
-        String path = "/WEB-INF/MovingPage.html";
+        String path = "/WEB-INF/MovePage.html";
         ServletContext servletContext = getServletContext();
 
         final WebContext webContext = new WebContext(request, response, servletContext, request.getLocale());
