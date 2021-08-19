@@ -1,9 +1,9 @@
 package it.polimi.tiw.controllers;
 
 import it.polimi.tiw.beans.Category;
-import it.polimi.tiw.beans.User;
 import it.polimi.tiw.dao.CategoryDAO;
 import it.polimi.tiw.utils.ConnectionHandler;
+import org.apache.commons.text.StringEscapeUtils;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.WebContext;
 import org.thymeleaf.templatemode.TemplateMode;
@@ -14,20 +14,14 @@ import javax.servlet.http.*;
 import javax.servlet.annotation.*;
 import java.io.IOException;
 import java.sql.Connection;
-import java.sql.SQLException;
 import java.util.List;
 
-@WebServlet("/GoToHomePage")
-public class GoToHomePage extends HttpServlet {
+@WebServlet("/GoToMovePage")
+public class GoToMovePage extends HttpServlet {
+
     private static final long serialVersionUID = 1L;
     private TemplateEngine templateEngine;
     private Connection connection = null;
-    private User user;
-
-    public GoToHomePage() {
-        super();
-    }
-
 
     public void init() throws ServletException {
         connection = ConnectionHandler.getConnection(getServletContext());
@@ -41,8 +35,8 @@ public class GoToHomePage extends HttpServlet {
     }
 
 
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
         // If the user is not logged in (not present in session) redirect to the login
         String loginpath = getServletContext().getContextPath() + "/index.html";
@@ -52,7 +46,24 @@ public class GoToHomePage extends HttpServlet {
             return;
         }
 
-        user = (User) session.getAttribute("user");
+        boolean badRequest = false;
+
+        String idParam = StringEscapeUtils.escapeJava(request.getParameter("categoryid"));
+        int id = -1;
+
+        if(idParam == null) {
+            badRequest = true;
+        }
+        try {
+            id = Integer.parseInt(idParam);
+        } catch (NumberFormatException e) {
+            badRequest = true;
+        }
+
+        if(badRequest) {
+            response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Parameter id with format number is required");
+            return;
+        }
 
         List<Category> allCategories = null;
         List<Category> topCategories = null;
@@ -70,31 +81,24 @@ public class GoToHomePage extends HttpServlet {
             return;
         }
 
-
         // Redirect to the Home page and add categories to the parameters
-        String path = "/WEB-INF/HomePage.html";
+        String path = "/WEB-INF/MovingPage.html";
         ServletContext servletContext = getServletContext();
 
         final WebContext webContext = new WebContext(request, response, servletContext, request.getLocale());
         webContext.setVariable("allcategories",allCategories);
         webContext.setVariable("topcategories",topCategories);
+        webContext.setVariable("cid",id);
         templateEngine.process(path, webContext, response.getWriter());
 
     }
 
+
     /*
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        doGet(request, response);
-    }*/
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-
-    public void destroy() {
-        try {
-            ConnectionHandler.closeConnection(connection);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
     }
 
+     */
 }

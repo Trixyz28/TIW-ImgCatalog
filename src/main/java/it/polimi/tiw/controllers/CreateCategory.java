@@ -24,7 +24,6 @@ public class CreateCategory extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
     }
-
      */
 
     public void init() throws ServletException {
@@ -85,6 +84,7 @@ public class CreateCategory extends HttpServlet {
         response.sendRedirect(path);
 
     }
+
 
     @Override
     public void destroy() {
