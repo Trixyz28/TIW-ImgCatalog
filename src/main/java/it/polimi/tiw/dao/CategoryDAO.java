@@ -172,23 +172,23 @@ public class CategoryDAO {
                 }
             }
 
+            int oldChildPosition = chosen.getPosition();
+
             if(idOldFather != destination.getId()) {
                 oldFather = findById(idOldFather);
 
-                int oldChildPosition = chosen.getPosition(); //111
+                int oldNumChild = oldFather.getNumChild();
+                oldFather.setNumChild(oldNumChild-1);
+                updateNumChild(oldNumChild-1,idOldFather);
 
-                int oldNumChild = oldFather.getNumChild(); //2
-                oldFather.setNumChild(oldNumChild-1);   //1
-                updateNumChild(oldNumChild-1,idOldFather); // set to 1
-
-                int destNumChild = destination.getNumChild(); // 1
-                destination.setNumChild(destNumChild+1); // 2
-                updateNumChild(destNumChild+1,destid); // set to 2
+                int destNumChild = destination.getNumChild();
+                destination.setNumChild(destNumChild+1);
+                updateNumChild(destNumChild+1,destid);
 
                 /* Update child's position and its subtrees' ones*/
-                int newPosition = (destination.getPosition()*10)+ (destNumChild+1); // 12
-                chosen.setPosition(newPosition); // 12
-                updatePosition(newPosition,cid); // 12
+                int newPosition = (destination.getPosition()*10)+ (destNumChild+1);
+                chosen.setPosition(newPosition);
+                updatePosition(newPosition,cid);
                 findSubclasses(chosen);
                 recUpdatePosition(chosen);
 
@@ -208,9 +208,30 @@ public class CategoryDAO {
                         }
                     }
                 }
+
+            } else {
+
+                findSubclasses(destination);
+                if(!destination.getSubClasses().isEmpty()) {
+                    for(Category c : destination.getSubClasses()) {
+                        if(c.getId() != cid) {
+                            if(c.getPosition() > oldChildPosition) {
+                                c.setPosition(c.getPosition()-1);
+                                updatePosition(c.getPosition(),c.getId());
+                                recUpdatePosition(c);
+                            }
+
+                        } else {
+                            int newPosition = (destination.getPosition()*10) + destination.getNumChild();
+                            c.setPosition(newPosition);
+                            updatePosition(c.getPosition(),c.getId());
+                            recUpdatePosition(c);
+                        }
+
+
+                    }
+                }
             }
-
-
 
         } catch (SQLException e) {
             connection.rollback();
