@@ -137,6 +137,10 @@ public class CategoryDAO {
      */
     public void moveCategory(int cid, int destid) throws Exception {
 
+        if(cid<=0 || destid<=0) {
+            throw new Exception();
+        }
+
         connection.setAutoCommit(false);
 
         Category chosen = findById(cid);
@@ -168,46 +172,43 @@ public class CategoryDAO {
                 }
             }
 
-            oldFather = findById(idOldFather);
+            if(idOldFather != destination.getId()) {
+                oldFather = findById(idOldFather);
 
-            int oldChildPosition = chosen.getPosition();
+                int oldChildPosition = chosen.getPosition(); //111
 
-            int oldNumChild = oldFather.getNumChild();
-            int destNumChild = destination.getNumChild();
+                int oldNumChild = oldFather.getNumChild(); //2
+                oldFather.setNumChild(oldNumChild-1);   //1
+                updateNumChild(oldNumChild-1,idOldFather); // set to 1
 
+                int destNumChild = destination.getNumChild(); // 1
+                destination.setNumChild(destNumChild+1); // 2
+                updateNumChild(destNumChild+1,destid); // set to 2
 
-            updateNumChild(oldNumChild-1,idOldFather);
-            updateNumChild(destNumChild+1,destid);
+                /* Update child's position and its subtrees' ones*/
+                int newPosition = (destination.getPosition()*10)+ (destNumChild+1); // 12
+                chosen.setPosition(newPosition); // 12
+                updatePosition(newPosition,cid); // 12
+                findSubclasses(chosen);
+                recUpdatePosition(chosen);
 
+                deleteLink(idOldFather, cid);
+                addLink(destid,cid);
 
-            /* Update child's position and its subtrees' ones*/
-            int newPosition = (destination.getPosition()*10)+ (destNumChild+1);
-            chosen.setPosition(newPosition);
-            updatePosition(newPosition,cid);
-            findSubclasses(chosen);
-            if(!chosen.getSubClasses().isEmpty()) {
-                for(Category c : chosen.getSubClasses()) {
-                    recUpdatePosition(c);
-                }
-            }
+                /* Update position index of oldfather's other children, if > chosenposition */
 
-            deleteLink(idOldFather, cid);
-            addLink(destid,cid);
+                findSubclasses(oldFather);
+                if(!oldFather.getSubClasses().isEmpty()) {
+                    for(Category c : oldFather.getSubClasses()) {
 
-            /* Update position index of oldfather's other children, if > chosenposition */
-
-            findSubclasses(oldFather);
-            if(!oldFather.getSubClasses().isEmpty()) {
-                for(Category c : oldFather.getSubClasses()) {
-
-                    if(c.getPosition() > oldChildPosition) {
-                        c.setPosition(c.getPosition()-1);
-                        updatePosition(c.getPosition(),c.getId());
-                        recUpdatePosition(c);
+                        if(c.getPosition() > oldChildPosition) {
+                            c.setPosition(c.getPosition()-1);
+                            updatePosition(c.getPosition(),c.getId());
+                            recUpdatePosition(c);
+                        }
                     }
                 }
             }
-
 
 
 
