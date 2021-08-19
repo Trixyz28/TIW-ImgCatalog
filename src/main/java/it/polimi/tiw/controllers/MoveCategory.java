@@ -38,7 +38,13 @@ public class MoveCategory extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        doPost(request,response);
+    }
 
+
+
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         // If the user is not logged in (not present in session) redirect to the login
         String loginpath = getServletContext().getContextPath() + "/index.html";
         HttpSession session = request.getSession();
@@ -91,15 +97,5 @@ public class MoveCategory extends HttpServlet {
         String contextPath = getServletContext().getContextPath();
         String path = contextPath + "/GoToHomePage";
         response.sendRedirect(path);
-
     }
-
-
-    /*
-    @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
-    }
-
-     */
 }

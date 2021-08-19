@@ -37,7 +37,13 @@ public class GoToMovePage extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        doPost(request,response);
+    }
 
+
+
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         // If the user is not logged in (not present in session) redirect to the login
         String loginpath = getServletContext().getContextPath() + "/index.html";
         HttpSession session = request.getSession();
@@ -94,11 +100,4 @@ public class GoToMovePage extends HttpServlet {
     }
 
 
-    /*
-    @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
-    }
-
-     */
 }
