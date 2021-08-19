@@ -7,7 +7,7 @@
 
   <div th:if="${category.getTop == true}" th:class="(${category.getTop}) ? 'top'">
 
-    <span th:text="${category.getPosition() + '  ' + category.getName()}"></span>
+    <span th:text="${category.getPosition() + '  ' + category.getName() + ' (nchild = ' + category.getNumChild() + ')'}"></span>
 
     <a th:href="@{/GoToMovePage(categoryid=${category.id})}">Sposta</a>
 
@@ -18,7 +18,7 @@
 
     <li th:each="child : ${category.getSubClasses()}">
 
-      <span th:text="${child.getPosition() + '  ' + child.getName()}"></span>
+      <span th:text="${child.getPosition() + '  ' + child.getName() + ' (nchild = ' + child.getNumChild() + ')'}"></span>
       <a th:href="@{/GoToMovePage(categoryid=${child.getId()})}">Sposta</a>
 
       <!--/* "this" indicates that the fragment to be used is in this file */-->
