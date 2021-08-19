@@ -11,7 +11,7 @@
     <ul>
         <!--/* the category parameter to use in the fragment is the current child */-->
         <li th:each="category : ${topcategories}"
-            th:insert="@{WEB-INF/movefragment.html} :: list (category)"></li>
+            th:insert="@{WEB-INF/movefragment.html} :: list (category,0)"></li>
     </ul>
 
 </body>
