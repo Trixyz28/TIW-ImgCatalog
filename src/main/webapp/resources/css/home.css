@@ -1,5 +1,5 @@
 .formdiv {
-    width: "33%";
+    width: 33%;
     float: left;
     display: inline;
     margin: 10px;
@@ -48,4 +48,12 @@ ul li::after {
     height: 1px;
     background-color: #000;
     top: 12px;
+}
+
+.selected{
+    color: red;
+}
+
+.notselected{
+    color: black;
 }

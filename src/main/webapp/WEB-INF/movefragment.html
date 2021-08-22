@@ -25,7 +25,7 @@
       </div>
 
       <div th:if="${child.id == cid || com == 1}">
-        <span th:text="${child.getPosition() + '  ' + child.getName()}"></span>
+        <span th:class="selected" th:text="${child.getPosition() + '  ' + child.getName()}"></span>
         <ul th:replace="this::list (${child},1)"></ul>
       </div>
 

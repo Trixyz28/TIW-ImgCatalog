@@ -49,3 +49,11 @@ ul li::after {
     background-color: #000;
     top: 12px;
 }
+
+.selected{
+    color: red;
+}
+
+.notselected{
+    color: black;
+}
