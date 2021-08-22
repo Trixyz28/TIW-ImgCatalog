@@ -62,7 +62,7 @@ public class MoveCategory extends HttpServlet {
             cid = Integer.parseInt(cidParam);
             destid = Integer.parseInt(destParam);
 
-            if(cid <= 0 || destid <= 0) {
+            if(cid <= 0 || destid < 0) {
                 badRequest = true;
             }
         } catch (NumberFormatException e) {

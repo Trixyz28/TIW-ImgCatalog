@@ -4,7 +4,7 @@
     <meta charset="ISO-8859-1">
     <title>Home Page</title>
     <link rel="stylesheet" type="text/css" media="all"
-          href="../CSS/home.css" th:href="@{/resources/css/home.css}" />
+          href="resources/css/main.css" />
 </head>
 
 <body>
@@ -22,7 +22,7 @@
     <ul>
         <!--/* the category parameter to use in the fragment is the current child */-->
         <li th:each="category : ${topcategories}"
-            th:insert="@{WEB-INF/fragment.html} :: list (category)"></li>
+            th:insert="@{WEB-INF/fragment.html} :: list (category)" th:class="top"></li>
     </ul>
 
 

@@ -7,7 +7,7 @@
 
   <div th:if="${category.getTop == true}" th:class="(${category.getTop}) ? 'top'">
 
-    <span th:text="${category.getPosition() + '  ' + category.getName()}"></span>
+    <span th:text="${category.getName()}"></span>
 
     <a th:if="${category.id != cid}" th:href="@{/MoveCategory(categoryid=${cid}, destid=${category.id})}">Sposta qui</a>
 

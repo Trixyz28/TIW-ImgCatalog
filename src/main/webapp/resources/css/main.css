@@ -14,7 +14,8 @@ ul li {
     padding-left: 5px;
 }
 
-ul li::before {
+
+ul li:not(.top)::before {
     content: " ";
     position: absolute;
     width: 1px;
@@ -24,11 +25,14 @@ ul li::before {
     left: -10px;
 }
 
+
+
 body > ul > li:first-child::before {top: 12px;}
 
 ul li:not(:first-child):last-child::before {display: none;}
 
-ul li:only-child::before {
+
+ul li:not(.top):only-child::before {
     display: list-item;
     content: " ";
     position: absolute;
@@ -40,7 +44,8 @@ ul li:only-child::before {
     left: -10px;
 }
 
-ul li::after {
+
+ul li:not(.top)::after {
     content: " ";
     position: absolute;
     left: -10px;

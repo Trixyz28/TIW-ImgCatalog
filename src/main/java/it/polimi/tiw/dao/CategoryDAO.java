@@ -39,7 +39,7 @@ public class CategoryDAO {
     public List<Category> findTopsAndSubtrees() throws SQLException {
 
         List<Category> categories = new ArrayList<>();
-        String query = "SELECT * FROM category WHERE id NOT IN (select child FROM relations) ORDER BY position ASC";
+        String query = "SELECT * FROM category WHERE id=0";
 
         try (PreparedStatement pstatement = connection.prepareStatement(query)) {
 
@@ -137,9 +137,6 @@ public class CategoryDAO {
      */
     public void moveCategory(int cid, int destid) throws Exception {
 
-        if(cid<=0 || destid<=0) {
-            throw new Exception();
-        }
 
         connection.setAutoCommit(false);
 
