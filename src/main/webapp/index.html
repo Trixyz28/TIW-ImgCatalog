@@ -1,19 +1,41 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-<meta charset="UTF-8">
-<title>Login</title>
+    <meta charset="UTF-8">
+    <title>Login</title>
+    <link rel="stylesheet" type="text/css" media="all"
+          href="resources/css/login.css" />
 </head>
 <body>
-    <h1>Welcome to the image classification page!</h1>
 
+<div class="welcome">
+    <h1>Welcome to the image classification page!</h1>
+</div>
+
+<div class="formdiv">
     <form action="Login" method="POST">
-        Username: <input type="text" name="username" required> <br>
-        Password: <input type="password" name="password" required><br>
-        <input type="submit" value="login">
-        <!-- tag <p>: paragraph -->
-        <p th:text=" ${errorMsg}"></p>
+        <div class="inputdiv1">
+            Username: <input type="text" name="username" required> <br>
+        </div>
+
+        <div class="inputdiv">
+            Password: <input type="password" name="password" required><br>
+        </div>
+
+        <div class="inputdiv">
+            <input type="submit" value="Login">
+        </div>
+
+        <div>
+            <!-- tag <p>: paragraph -->
+            <p th:text=" ${errorMsg}"></p>
+        </div>
+
     </form>
+
+
+</div>
+
 
 
 </body>

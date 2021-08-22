@@ -1,0 +1,24 @@
+
+.welcome {
+    padding-top: 30px;
+    text-align: center;
+}
+
+.formdiv {
+    width: 30%;
+    text-align: center;
+    border: 3px solid #464646;
+    margin: 0 auto;
+}
+
+.inputdiv1 {
+    padding-top: 20px;
+}
+
+.inputdiv {
+    padding: 10px;
+}
+
+input {
+    text-align: center;
+}
