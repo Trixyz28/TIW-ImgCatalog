@@ -22,7 +22,6 @@ public class GoToHomePage extends HttpServlet {
     private static final long serialVersionUID = 1L;
     private TemplateEngine templateEngine;
     private Connection connection = null;
-    private User user;
 
     public GoToHomePage() {
         super();
@@ -43,16 +42,6 @@ public class GoToHomePage extends HttpServlet {
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
-        // If the user is not logged in (not present in session) redirect to the login
-        String loginpath = getServletContext().getContextPath() + "/index.html";
-        HttpSession session = request.getSession();
-        if (session.isNew() || session.getAttribute("user") == null) {
-            response.sendRedirect(loginpath);
-            return;
-        }
-
-        user = (User) session.getAttribute("user");
 
         List<Category> allCategories = null;
         List<Category> topCategories = null;

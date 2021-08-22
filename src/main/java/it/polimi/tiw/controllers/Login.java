@@ -76,12 +76,14 @@ public class Login extends HttpServlet {
         // show login page with error message
 
         String path;
+
         if (user == null) {
             ServletContext servletContext = getServletContext();
             final WebContext webContext = new WebContext(request, response, servletContext, request.getLocale());
             webContext.setVariable("errorMsg", "Incorrect username or password");
             path = "/index.html";
             templateEngine.process(path, webContext, response.getWriter());
+
         } else {
             request.getSession().setAttribute("user", user);
             path = getServletContext().getContextPath() + "/GoToHomePage";
