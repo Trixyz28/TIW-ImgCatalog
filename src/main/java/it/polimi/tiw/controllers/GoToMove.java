@@ -16,8 +16,8 @@ import java.io.IOException;
 import java.sql.Connection;
 import java.util.List;
 
-@WebServlet("/GoToMovePage")
-public class GoToMovePage extends HttpServlet {
+@WebServlet("/GoToMove")
+public class GoToMove extends HttpServlet {
 
     private static final long serialVersionUID = 1L;
     private TemplateEngine templateEngine;
@@ -79,13 +79,14 @@ public class GoToMovePage extends HttpServlet {
         }
 
         // Redirect to the Home page and add categories to the parameters
-        String path = "/WEB-INF/MovePage.html";
+        String path = "/WEB-INF/HomePage.html";
         ServletContext servletContext = getServletContext();
 
         final WebContext webContext = new WebContext(request, response, servletContext, request.getLocale());
         webContext.setVariable("allcategories",allCategories);
         webContext.setVariable("topcategories",topCategories);
         webContext.setVariable("cid",id);
+        webContext.setVariable("page","move");
         templateEngine.process(path, webContext, response.getWriter());
 
     }

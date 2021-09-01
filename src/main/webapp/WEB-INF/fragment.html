@@ -17,7 +17,7 @@
     <li th:each="child : ${category.getSubClasses()}">
 
       <span th:text="${child.getPosition() + '  ' + child.getName() + ' '}"></span>
-      <a th:href="@{/GoToMovePage(categoryid=${child.getId()})}">Sposta</a>
+      <a th:href="@{/GoToMove(categoryid=${child.getId()})}">Sposta</a>
 
       <!--/* "this" indicates that the fragment to be used is in this file */-->
       <!--/* the product parameter to use in the fragment is the current child */-->

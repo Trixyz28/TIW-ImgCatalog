@@ -7,48 +7,61 @@
           href="resources/css/main.css" />
 </head>
 
+
 <body>
 
     <div align="right">
         <a th:href="@{/Logout}">Logout</a>
     </div>
 
-    <h3>Welcome,
-        <span th:text="${session.user.name + ' ' + session.user.surname}">User A</span>!
-    </h3>
+
+    <div th:if="${page == 'home'}">
+        <h3>Welcome,
+            <span th:text="${session.user.name + ' ' + session.user.surname}">User A</span>!
+        </h3>
 
 
 
-    <ul>
-        <!--/* the category parameter to use in the fragment is the current child */-->
-        <li th:each="category : ${topcategories}"
-            th:insert="@{WEB-INF/fragment.html} :: list (category)" th:class="top"></li>
-    </ul>
+        <ul>
+            <!--/* the category parameter to use in the fragment is the current child */-->
+            <li th:each="category : ${topcategories}"
+                th:insert="@{WEB-INF/fragment.html} :: list (category)" th:class="top"></li>
+        </ul>
 
 
-    <div class="formdiv">
-        <p>Complete the form to create a category</p>
-        <form action="#" th:action="@{/CreateCategory}" method="POST">
-            <fieldset>
-                <p>
-                    Name: <input type="text" name="newname" required />
-                </p>
+        <div class="formdiv">
+            <p>Complete the form to create a category</p>
+            <form action="#" th:action="@{/CreateCategory}" method="POST">
+                <fieldset>
+                    <p>
+                        Name: <input type="text" name="newname" required />
+                    </p>
 
-                <p>
-                    <label>Choose a father category:</label>
-                    <select
-                        name="fid" id="fid">
-                    <option th:each="c : ${allcategories}" th:value="${c.id}"
-                            th:text="${c.name}"></option>
-                    </select>
-                </p>
+                    <p>
+                        <label>Choose a father category:</label>
+                        <select
+                                name="fid" id="fid">
+                            <option th:each="c : ${allcategories}" th:value="${c.id}"
+                                    th:text="${c.name}"></option>
+                        </select>
+                    </p>
 
-                <div class="submitButton">
-                    <input type="submit"  name="Create Category">
-                </div>
+                    <div class="submitButton">
+                        <input type="submit"  name="Create Category">
+                    </div>
 
-            </fieldset>
-        </form>
+                </fieldset>
+            </form>
+        </div>
+    </div>
+
+    <div th:if="${page == 'move'}">
+        <ul>
+            <!--/* the category parameter to use in the fragment is the current child */-->
+            <li th:each="category : ${topcategories}"
+                th:insert="@{WEB-INF/movefragment.html} :: list (category,0)" th:class="top"></li>
+        </ul>
+
     </div>
 
 
