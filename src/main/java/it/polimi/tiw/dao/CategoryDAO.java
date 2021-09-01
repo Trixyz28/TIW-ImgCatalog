@@ -60,7 +60,7 @@ public class CategoryDAO {
 
     public void findSubclasses(Category c) throws SQLException {
 
-        String query = "SELECT C.id, C.name, C.position, C.num_child FROM relations R JOIN category C on C.id = R.child WHERE R.father = ? ORDER BY C.position ASC";
+        String query = "SELECT C.id, C.name, C.position, C.num_child FROM subcats R JOIN category C on C.id = R.child WHERE R.father = ? ORDER BY C.position ASC";
 
         try (PreparedStatement pstatement = connection.prepareStatement(query);) {
 
@@ -159,7 +159,7 @@ public class CategoryDAO {
                 throw new Exception();
             }
 
-            String query = "SELECT father FROM relations WHERE child = ?";
+            String query = "SELECT father FROM subcats WHERE child = ?";
             try (PreparedStatement pStatement = connection.prepareStatement(query)) {
                 pStatement.setInt(1, cid);
                 try (ResultSet result = pStatement.executeQuery()) {
@@ -302,7 +302,7 @@ public class CategoryDAO {
     }
 
     private void addLink(int fid, int cid) throws SQLException {
-        String query = "INSERT into relations(father, child) VALUES(?, ?)";
+        String query = "INSERT into subcats(father, child) VALUES(?, ?)";
         try (PreparedStatement pstatement = connection.prepareStatement(query)) {
             pstatement.setInt(1, fid);
             pstatement.setInt(2, cid);
@@ -311,7 +311,7 @@ public class CategoryDAO {
     }
 
     private void deleteLink(int fid, int cid) throws SQLException {
-        String query = "DELETE from relations WHERE father = ? AND child = ?";
+        String query = "DELETE from subcats WHERE father = ? AND child = ?";
         try (PreparedStatement pstatement = connection.prepareStatement(query)) {
             pstatement.setInt(1, fid);
             pstatement.setInt(2, cid);
@@ -337,7 +337,7 @@ public class CategoryDAO {
         //check if p2 is an ancestor of p1 by using RECURSIVE
         boolean exists = false;
 
-        String query = "with recursive cte (father, child) as (select father, child from relations where child = ? union all select p.father, p.child from relations p inner join cte on p.child = cte.father) select  * from cte where father = ?;";
+        String query = "with recursive cte (father, child) as (select father, child from subcats where child = ? union all select p.father, p.child from subcats p inner join cte on p.child = cte.father) select  * from cte where father = ?;";
         try (PreparedStatement pstatement = connection.prepareStatement(query);) {
             pstatement.setInt(1, p1);
             pstatement.setInt(2, p2);

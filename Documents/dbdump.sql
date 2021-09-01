@@ -29,7 +29,7 @@ CREATE TABLE `category` (
   `num_child` varchar(45) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
   UNIQUE KEY `name_UNIQUE` (`name`)
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -38,18 +38,18 @@ CREATE TABLE `category` (
 
 LOCK TABLES `category` WRITE;
 /*!40000 ALTER TABLE `category` DISABLE KEYS */;
-INSERT INTO `category` VALUES (1,'Mitologia classica e storia antica','1','1'),(2,'Divinità della mitologia classica','11','2'),(3,'Divinità del cielo','111','2'),(4,'Giove','1111','1'),(5,'Attributi di Giove','11111','0'),(6,'Giunone','1112','0'),(7,'Divinità degli inferi','112','2'),(8,'Plutone','1121','0'),(9,'Ecate','1122','0');
+INSERT INTO `category` VALUES (0,'root','0','1'),(1,'Mitologia classica e storia antica','1','1'),(2,'Divinità della mitologia classica','11','2'),(3,'Divinità del cielo','111','2'),(4,'Giove','1111','1'),(5,'Attributi di Giove','11111','0'),(6,'Giunone','1112','0'),(7,'Divinità degli inferi','112','2'),(8,'Plutone','1121','0'),(9,'Ecate','1122','0');
 /*!40000 ALTER TABLE `category` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
--- Table structure for table `relations`
+-- Table structure for table `subcats`
 --
 
-DROP TABLE IF EXISTS `relations`;
+DROP TABLE IF EXISTS `subcats`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `relations` (
+CREATE TABLE `subcats` (
   `father` int NOT NULL,
   `child` int NOT NULL,
   PRIMARY KEY (`father`,`child`),
@@ -60,13 +60,13 @@ CREATE TABLE `relations` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `relations`
+-- Dumping data for table `subcats`
 --
 
-LOCK TABLES `relations` WRITE;
-/*!40000 ALTER TABLE `relations` DISABLE KEYS */;
-INSERT INTO `relations` VALUES (1,2),(2,3),(3,4),(4,5),(3,6),(2,7),(7,8),(7,9);
-/*!40000 ALTER TABLE `relations` ENABLE KEYS */;
+LOCK TABLES `subcats` WRITE;
+/*!40000 ALTER TABLE `subcats` DISABLE KEYS */;
+INSERT INTO `subcats` VALUES (0,1),(1,2),(2,3),(3,4),(4,5),(3,6),(2,7),(7,8),(7,9);
+/*!40000 ALTER TABLE `subcats` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -84,7 +84,7 @@ CREATE TABLE `user` (
   `surname` varchar(45) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `username_UNIQUE` (`username`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -93,17 +93,9 @@ CREATE TABLE `user` (
 
 LOCK TABLES `user` WRITE;
 /*!40000 ALTER TABLE `user` DISABLE KEYS */;
-INSERT INTO `user` VALUES (1,'zmy','ciaooo','Zheng Maria','Yu');
+INSERT INTO `user` VALUES (1,'zmy','abcdef','Zheng Maria','Yu'),(2,'test','test','test','A');
 /*!40000 ALTER TABLE `user` ENABLE KEYS */;
 UNLOCK TABLES;
-
---
--- Dumping events for database 'dbproject'
---
-
---
--- Dumping routines for database 'dbproject'
---
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -114,4 +106,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2021-08-19 11:16:28
+-- Dump completed on 2021-09-01 15:19:31

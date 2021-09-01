@@ -17,7 +17,7 @@ import java.io.IOException;
 import java.sql.Connection;
 import java.util.List;
 
-@WebServlet(name = "MoveCategory", value = "/MoveCategory")
+@WebServlet("/MoveCategory")
 public class MoveCategory extends HttpServlet {
 
     private static final long serialVersionUID = 1L;

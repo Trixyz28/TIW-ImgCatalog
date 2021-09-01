@@ -62,3 +62,7 @@ ul li:not(.top)::after {
 .notselected{
     color: black;
 }
+
+.submitButton {
+    text-align: center;
+}
