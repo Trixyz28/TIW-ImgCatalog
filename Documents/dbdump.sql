@@ -26,7 +26,6 @@ CREATE TABLE `category` (
   `id` int NOT NULL AUTO_INCREMENT,
   `name` varchar(45) NOT NULL,
   `position` varchar(45) NOT NULL,
-  `num_child` varchar(45) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
   UNIQUE KEY `name_UNIQUE` (`name`)
 ) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
@@ -38,7 +37,7 @@ CREATE TABLE `category` (
 
 LOCK TABLES `category` WRITE;
 /*!40000 ALTER TABLE `category` DISABLE KEYS */;
-INSERT INTO `category` VALUES (0,'root','0','1'),(1,'Mitologia classica e storia antica','1','1'),(2,'Divinità della mitologia classica','11','2'),(3,'Divinità del cielo','111','2'),(4,'Giove','1111','1'),(5,'Attributi di Giove','11111','0'),(6,'Giunone','1112','0'),(7,'Divinità degli inferi','112','2'),(8,'Plutone','1121','0'),(9,'Ecate','1122','0');
+INSERT INTO `category` VALUES (0,'root','0'),(1,'Mitologia classica e storia antica','1'),(2,'Divinità della mitologia classica','11'),(3,'Divinità del cielo','111'),(4,'Giove','1111'),(5,'Attributi di Giove','11111'),(6,'Giunone','1112'),(7,'Divinità degli inferi','112'),(8,'Plutone','1121'),(9,'Ecate','1122');
 /*!40000 ALTER TABLE `category` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -106,4 +105,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2021-09-01 15:19:31
+-- Dump completed on 2021-09-01 18:58:05

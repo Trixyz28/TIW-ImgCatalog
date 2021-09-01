@@ -45,24 +45,22 @@ public class GoToMovePage extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-        boolean badRequest = false;
 
         String idParam = StringEscapeUtils.escapeJava(request.getParameter("categoryid"));
         int id = -1;
 
         if(idParam == null) {
-            badRequest = true;
+            response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Parameter id cannot be null");
+            return;
         }
+
         try {
             id = Integer.parseInt(idParam);
         } catch (NumberFormatException e) {
-            badRequest = true;
-        }
-
-        if(badRequest) {
             response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Parameter id with format number is required");
             return;
         }
+
 
         List<Category> allCategories = null;
         List<Category> topCategories = null;
@@ -76,7 +74,7 @@ public class GoToMovePage extends HttpServlet {
         } catch(Exception e) {
             e.printStackTrace();
             response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR,
-                    "Error in retrieving products from the database");
+                    "Error in retrieving categories from the database");
             return;
         }
 

@@ -60,7 +60,7 @@ public class CategoryDAO {
 
     public void findSubclasses(Category c) throws SQLException {
 
-        String query = "SELECT C.id, C.name, C.position, C.num_child FROM subcats R JOIN category C on C.id = R.child WHERE R.father = ? ORDER BY C.position ASC";
+        String query = "SELECT C.id, C.name, C.position FROM subcats R JOIN category C on C.id = R.child WHERE R.father = ? ORDER BY C.position ASC";
 
         try (PreparedStatement pstatement = connection.prepareStatement(query);) {
 
@@ -81,7 +81,6 @@ public class CategoryDAO {
     - Trace the father category with fid
     - Check if father's num_child >= 9
     - Calculate the new category's position index
-    - Update father's num_child
     - Insert the new category in category table (name, position)
     - Insert the link in relations table
      */
@@ -99,16 +98,17 @@ public class CategoryDAO {
                 throw new SQLException();
             }
 
-            if(father.getNumChild() >= 9) {
+            int fatherNumChild = findNumChild(father);
+
+            if(fatherNumChild >= 9) {
                 throw new Exception();
             }
 
-            newNumChild = father.getNumChild()+1;
+            newNumChild = fatherNumChild+1;
             newPosition = (father.getPosition()*10)+(newNumChild);
 
-            updateNumChild(newNumChild,fid);
             insertNewCategory(name,newPosition);
-            addLink(fid,findMaxId());
+            addLink(fid,findIdByName(name));
 
             connection.commit();
 
@@ -128,8 +128,6 @@ public class CategoryDAO {
     - Trace oldfather with cid from relations table #
     - Take note about the child oldposition #
     - Trace oldfather's other children, update their position index if > oldposition
-    - Update oldfather's num_child #
-    - Update newfather's num_child #
     - Update child's position
     - Update all its subtrees' position
     - Delete link oldfid - cid from relations table
@@ -150,13 +148,15 @@ public class CategoryDAO {
             throw new SQLException();
         }
 
+        int destNumChild = findNumChild(destination);
+
         try {
 
-            if(destination.getNumChild() >= 9) {
-                throw new Exception();
+            if(destNumChild >= 9) {
+                throw new Exception("Maximum number of children reached");
             }
             if(cyclicLinkExists(destid,cid)) {
-                throw new Exception();
+                throw new Exception("Impossible to complete the move");
             }
 
             String query = "SELECT father FROM subcats WHERE child = ?";
@@ -173,14 +173,6 @@ public class CategoryDAO {
 
             if(idOldFather != destination.getId()) {
                 oldFather = findById(idOldFather);
-
-                int oldNumChild = oldFather.getNumChild();
-                oldFather.setNumChild(oldNumChild-1);
-                updateNumChild(oldNumChild-1,idOldFather);
-
-                int destNumChild = destination.getNumChild();
-                destination.setNumChild(destNumChild+1);
-                updateNumChild(destNumChild+1,destid);
 
                 /* Update child's position and its subtrees' ones*/
                 int newPosition = (destination.getPosition()*10)+ (destNumChild+1);
@@ -219,7 +211,7 @@ public class CategoryDAO {
                             }
 
                         } else {
-                            int newPosition = (destination.getPosition()*10) + destination.getNumChild();
+                            int newPosition = (destination.getPosition()*10) + destNumChild;
                             c.setPosition(newPosition);
                             updatePosition(c.getPosition(),c.getId());
                             recUpdatePosition(c);
@@ -266,21 +258,11 @@ public class CategoryDAO {
 
         cat.setId(result.getInt("id"));
         cat.setName(result.getString("name"));
-        cat.setNumChild(result.getInt("num_child"));
         cat.setPosition(result.getInt("position"));
 
         return cat;
     }
 
-
-    private void updateNumChild(int numChild,int fid) throws SQLException {
-        String query = "UPDATE category SET num_child = ? WHERE id = ?";
-        try (PreparedStatement pStatement = connection.prepareStatement(query)) {
-            pStatement.setInt(1,numChild);
-            pStatement.setInt(2,fid);
-            pStatement.executeUpdate();
-        }
-    }
 
     private void updatePosition(int position, int id) throws SQLException {
         String query = "UPDATE category SET position = ? WHERE id = ?";
@@ -319,19 +301,23 @@ public class CategoryDAO {
         }
     }
 
-    private int findMaxId() throws SQLException {
-        String query = "SELECT MAX(id) FROM category";
-        int max = 0;
+    private int findIdByName(String str) throws SQLException {
+
+        int index = -1;
+        String query = "SELECT id FROM category WHERE name = ?";
 
         try (PreparedStatement pStatement = connection.prepareStatement(query)) {
+            pStatement.setString(1,str);
             try (ResultSet result = pStatement.executeQuery()) {
                 while (result.next()) {
-                    max = result.getInt(1);
+                    index = result.getInt(1);
                 }
             }
         }
-        return max;
+
+        return index;
     }
+
 
     private boolean cyclicLinkExists(int p1, int p2) throws SQLException {
         //check if p2 is an ancestor of p1 by using RECURSIVE
@@ -370,6 +356,24 @@ public class CategoryDAO {
         }
     }
 
+    private int findNumChild(Category father) throws SQLException {
+
+        int fid = father.getId();
+        int nChild = 0;
+
+        String query = "SELECT COUNT(*) AS num FROM subcats WHERE father = ?";
+        try (PreparedStatement pstatement = connection.prepareStatement(query);) {
+            pstatement.setInt(1, fid);
+            try (ResultSet result = pstatement.executeQuery()) {
+                while (result.next()) {
+                    nChild = result.getInt("num");
+                }
+            }
+        }
+
+        return nChild;
+
+    }
 
 
 }

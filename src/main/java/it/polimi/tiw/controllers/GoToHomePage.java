@@ -55,7 +55,7 @@ public class GoToHomePage extends HttpServlet {
         } catch(Exception e) {
             e.printStackTrace();
             response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR,
-                    "Error in retrieving products from the database");
+                    "Error in retrieving categories from the database");
             return;
         }
 

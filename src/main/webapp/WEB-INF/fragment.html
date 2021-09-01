@@ -7,7 +7,6 @@
 
   <div th:if="${category.getTop == true}" th:class="(${category.getTop}) ? 'topdiv'">
 
-    <!--<span th:text="${category.getPosition() + '  ' + category.getName() + ' (nchild = ' + category.getNumChild() + ')'}"></span> -->
     <span th:if="${category.getTop != true}" th:text="${category.getName() + ' '}"></span>
 
   </div>
@@ -17,7 +16,6 @@
 
     <li th:each="child : ${category.getSubClasses()}">
 
-      <!-- <span th:text="${child.getPosition() + '  ' + child.getName() + ' (nchild = ' + child.getNumChild() + ')'}"></span> -->
       <span th:text="${child.getPosition() + '  ' + child.getName() + ' '}"></span>
       <a th:href="@{/GoToMovePage(categoryid=${child.getId()})}">Sposta</a>
 

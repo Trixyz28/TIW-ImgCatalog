@@ -1,12 +1,9 @@
 package it.polimi.tiw.controllers;
 
-import it.polimi.tiw.beans.Category;
-import it.polimi.tiw.beans.User;
 import it.polimi.tiw.dao.CategoryDAO;
 import it.polimi.tiw.utils.ConnectionHandler;
 import org.apache.commons.text.StringEscapeUtils;
 import org.thymeleaf.TemplateEngine;
-import org.thymeleaf.context.WebContext;
 import org.thymeleaf.templatemode.TemplateMode;
 import org.thymeleaf.templateresolver.ServletContextTemplateResolver;
 
@@ -15,7 +12,7 @@ import javax.servlet.http.*;
 import javax.servlet.annotation.*;
 import java.io.IOException;
 import java.sql.Connection;
-import java.util.List;
+
 
 @WebServlet("/MoveCategory")
 public class MoveCategory extends HttpServlet {
@@ -46,7 +43,6 @@ public class MoveCategory extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-        boolean badRequest = false;
 
         String cidParam = StringEscapeUtils.escapeJava(request.getParameter("categoryid"));
         String destParam = StringEscapeUtils.escapeJava(request.getParameter("destid"));
@@ -55,7 +51,8 @@ public class MoveCategory extends HttpServlet {
         int destid = -1;
 
         if(cidParam == null || destParam == null) {
-            badRequest = true;
+            response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Parameters cannot be null");
+            return;
         }
 
         try {
@@ -63,13 +60,10 @@ public class MoveCategory extends HttpServlet {
             destid = Integer.parseInt(destParam);
 
             if(cid <= 0 || destid < 0) {
-                badRequest = true;
+                response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid id!");
+                return;
             }
         } catch (NumberFormatException e) {
-            badRequest = true;
-        }
-
-        if(badRequest) {
             response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Parameter id with format number is required");
             return;
         }
@@ -81,7 +75,7 @@ public class MoveCategory extends HttpServlet {
             categoryDAO.moveCategory(cid,destid);
 
         } catch(Exception e) {
-            e.printStackTrace();
+            // e.printStackTrace();
             response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR,
                     "Error in moving the category");
             return;

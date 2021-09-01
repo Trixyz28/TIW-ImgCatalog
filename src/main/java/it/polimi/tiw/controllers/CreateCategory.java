@@ -41,7 +41,6 @@ public class CreateCategory extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-        boolean badRequest = false;
 
         String name = StringEscapeUtils.escapeJava(request.getParameter("newname"));
         String fidParam = StringEscapeUtils.escapeJava(request.getParameter("fid"));
@@ -49,23 +48,22 @@ public class CreateCategory extends HttpServlet {
         int fid = -1;
 
         if(name == null || fidParam == null) {
-            badRequest = true;
+            response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Parameters cannot be null");
+            return;
         }
 
         try {
             fid = Integer.parseInt(fidParam);
 
             if(fid < 0) {
-                badRequest = true;
+                response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid father category id");
+                return;
             }
         } catch (NumberFormatException e) {
-            badRequest = true;
-        }
-
-        if(badRequest) {
             response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Parameter id with format number is required");
             return;
         }
+
 
         CategoryDAO categoryDAO = new CategoryDAO(connection);
 
@@ -73,7 +71,7 @@ public class CreateCategory extends HttpServlet {
             categoryDAO.createCategory(name,fid);
 
         } catch(Exception e) {
-            e.printStackTrace();
+            // e.printStackTrace();
             response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR,
                     "Error in creating the category");
             return;

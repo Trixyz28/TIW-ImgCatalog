@@ -19,7 +19,7 @@ public class LoginChecker implements Filter {
 
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws ServletException, IOException {
-        System.out.print("Login checker filter executing ...\n");
+        System.out.println("Login checker filter executing ...");
 
 
         HttpServletRequest req = (HttpServletRequest) request;
