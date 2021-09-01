@@ -10,12 +10,11 @@
 
 <body>
 
-    <div align="right">
-        <a th:href="@{/Logout}">Logout</a>
-    </div>
+    <div th:if="${mode == 'home'}">
+        <div align="right">
+            <a th:href="@{/Logout}">Logout</a>
+        </div>
 
-
-    <div th:if="${page == 'home'}">
         <h3>Welcome,
             <span th:text="${session.user.name + ' ' + session.user.surname}">User A</span>!
         </h3>
@@ -55,7 +54,7 @@
         </div>
     </div>
 
-    <div th:if="${page == 'move'}">
+    <div th:if="${mode == 'move'}">
         <ul>
             <!--/* the category parameter to use in the fragment is the current child */-->
             <li th:each="category : ${topcategories}"

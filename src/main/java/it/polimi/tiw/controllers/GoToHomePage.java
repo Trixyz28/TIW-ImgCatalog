@@ -1,7 +1,6 @@
 package it.polimi.tiw.controllers;
 
 import it.polimi.tiw.beans.Category;
-import it.polimi.tiw.beans.User;
 import it.polimi.tiw.dao.CategoryDAO;
 import it.polimi.tiw.utils.ConnectionHandler;
 import org.thymeleaf.TemplateEngine;
@@ -67,7 +66,7 @@ public class GoToHomePage extends HttpServlet {
         final WebContext webContext = new WebContext(request, response, servletContext, request.getLocale());
         webContext.setVariable("allcategories",allCategories);
         webContext.setVariable("topcategories",topCategories);
-        webContext.setVariable("page","home");
+        webContext.setVariable("mode","home");
         templateEngine.process(path, webContext, response.getWriter());
 
     }

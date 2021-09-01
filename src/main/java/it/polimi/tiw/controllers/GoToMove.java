@@ -61,7 +61,6 @@ public class GoToMove extends HttpServlet {
             return;
         }
 
-
         List<Category> allCategories = null;
         List<Category> topCategories = null;
 
@@ -86,7 +85,7 @@ public class GoToMove extends HttpServlet {
         webContext.setVariable("allcategories",allCategories);
         webContext.setVariable("topcategories",topCategories);
         webContext.setVariable("cid",id);
-        webContext.setVariable("page","move");
+        webContext.setVariable("mode","move");
         templateEngine.process(path, webContext, response.getWriter());
 
     }
