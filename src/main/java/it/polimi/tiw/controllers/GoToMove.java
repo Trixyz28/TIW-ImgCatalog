@@ -3,6 +3,7 @@ package it.polimi.tiw.controllers;
 import it.polimi.tiw.beans.Category;
 import it.polimi.tiw.dao.CategoryDAO;
 import it.polimi.tiw.utils.ConnectionHandler;
+import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.text.StringEscapeUtils;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.WebContext;
@@ -14,6 +15,7 @@ import javax.servlet.http.*;
 import javax.servlet.annotation.*;
 import java.io.IOException;
 import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.List;
 
 @WebServlet("/GoToMove")
@@ -64,29 +66,48 @@ public class GoToMove extends HttpServlet {
         List<Category> allCategories = null;
         List<Category> topCategories = null;
 
+        String path = "/WEB-INF/HomePage.html";
+
         CategoryDAO categoryDAO = new CategoryDAO(connection);
+        Category cat;
 
         try {
-            allCategories = categoryDAO.findAllCategories();
-            topCategories = categoryDAO.findTopsAndSubtrees();
-
-        } catch(Exception e) {
+            cat = categoryDAO.checkId(id);
+        } catch (Exception e) {
             e.printStackTrace();
             response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR,
-                    "Error in retrieving categories from the database");
+                    "Error in checking the source category");
             return;
         }
 
-        // Redirect to the Home page and add categories to the parameters
-        String path = "/WEB-INF/HomePage.html";
-        ServletContext servletContext = getServletContext();
+        if(cat==null) {
+            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR,
+                    "Wrong category id");
 
-        final WebContext webContext = new WebContext(request, response, servletContext, request.getLocale());
-        webContext.setVariable("allcategories",allCategories);
-        webContext.setVariable("topcategories",topCategories);
-        webContext.setVariable("cid",id);
-        webContext.setVariable("mode","move");
-        templateEngine.process(path, webContext, response.getWriter());
+        } else {
+
+            try {
+                allCategories = categoryDAO.findAllCategories();
+                topCategories = categoryDAO.findTopsAndSubtrees();
+
+            } catch(Exception e) {
+                e.printStackTrace();
+                response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR,
+                        "Error in retrieving categories from the database");
+                return;
+            }
+
+            // Redirect to the Home page and add categories to the parameters
+
+            ServletContext servletContext = getServletContext();
+
+            final WebContext webContext = new WebContext(request, response, servletContext, request.getLocale());
+            webContext.setVariable("allcategories",allCategories);
+            webContext.setVariable("topcategories",topCategories);
+            webContext.setVariable("cid",id);
+            webContext.setVariable("mode","move");
+            templateEngine.process(path, webContext, response.getWriter());
+        }
 
     }
 
